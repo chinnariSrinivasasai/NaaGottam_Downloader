@@ -1,0 +1,60 @@
+{% extends "downloader/base.html" %}
+
+{% block title %}Naa Gottam - YouTube Downloader{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <h2>Paste your YouTube link,<br><span class="accent">download in high quality.</span></h2>
+</section>
+
+{% if error_message %}
+<div class="download-card is-error" style="max-width:620px; margin: 0 auto 28px;">
+    <p class="error-message"><strong>Error:</strong> {{ error_message }}</p>
+</div>
+{% endif %}
+
+<section class="download-card">
+    <h2>Enter Video URL</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Get Download Link</button>
+    </form>
+</section>
+
+{% if submitted_data and extracted_info %}
+<section class="download-card">
+    <h2>Ready to Download</h2>
+
+    <div class="video-meta">
+        <h3 style="flex:1; margin:0;">{{ extracted_info.title }}</h3>
+        <span class="quality-badge">{{ submitted_data.quality }}</span>
+    </div>
+
+    {% if extracted_info.thumbnail %}
+        <div class="thumbnail-wrap">
+            <img src="{{ extracted_info.thumbnail }}" alt="Video thumbnail">
+        </div>
+    {% endif %}
+
+    {% if extracted_info.download_url %}
+        <div class="download-actions">
+            <a href="{{ extracted_info.download_url }}" download class="btn-download">
+                Download Video
+            </a>
+        </div>
+    {% endif %}
+
+    <details class="meta-log">
+        <summary>View request details</summary>
+        <div class="meta-log-body">
+            <p><strong>URL:</strong> {{ submitted_data.url }}</p>
+            <p><strong>Thumbnail:</strong> {{ submitted_data.download_thumbnail }}</p>
+            <p><strong>Subtitles:</strong> {{ submitted_data.download_subtitle }}</p>
+        </div>
+    </details>
+</section>
+{% endif %}
+
+{% endblock %}

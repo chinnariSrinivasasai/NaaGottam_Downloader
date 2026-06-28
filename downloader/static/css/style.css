@@ -1,0 +1,472 @@
+/* =========================================
+   GOOGLE FONTS IMPORT
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+/* =========================================
+   DESIGN TOKENS
+   ========================================= */
+:root {
+    --bg:          #0D0D0F;
+    --surface:     #141418;
+    --surface-2:   #1C1C22;
+    --border:      rgba(255, 255, 255, 0.07);
+    --border-hover:rgba(255, 59, 59, 0.35);
+    --red:         #FF3B3B;
+    --red-dim:     #CC2E2E;
+    --red-glow:    rgba(255, 59, 59, 0.18);
+    --green:       #22C55E;
+    --green-glow:  rgba(34, 197, 94, 0.18);
+    --text-primary:#F0F0F5;
+    --text-muted:  #6E6E82;
+    --text-label:  #9898AA;
+    --radius-sm:   8px;
+    --radius-md:   14px;
+    --radius-lg:   20px;
+}
+
+/* =========================================
+   BASE RESET
+   ========================================= */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 59, 59, 0.12) 0%, transparent 70%);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 7%;
+    height: 68px;
+    background: rgba(13, 13, 15, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.logo h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    background: linear-gradient(90deg, #FF3B3B 0%, #FF7070 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* =========================================
+   HERO
+   ========================================= */
+.hero {
+    text-align: center;
+    padding: 72px 24px 48px;
+}
+
+.hero h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.6px;
+    line-height: 1.3;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero h2 span.accent {
+    color: var(--red);
+}
+
+/* Decorative underline on hero */
+.hero::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: var(--red);
+    border-radius: 999px;
+    margin: 28px auto 0;
+    box-shadow: 0 0 16px var(--red-glow);
+}
+
+/* =========================================
+   CARD
+   ========================================= */
+.download-card {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px 40px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.download-card:hover {
+    border-color: rgba(255, 255, 255, 0.11);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.download-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.2px;
+}
+
+.download-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.2px;
+}
+
+/* Error card accent */
+.download-card.is-error {
+    border-left: 3px solid var(--red);
+    background: rgba(255, 59, 59, 0.04);
+}
+
+/* =========================================
+   FORMS
+   ========================================= */
+.download-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+}
+
+.download-card input:not([type="checkbox"]),
+.download-card select {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.download-card select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6E82' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+}
+
+.download-card input:not([type="checkbox"]):focus,
+.download-card select:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px var(--red-glow);
+}
+
+/* Checkbox */
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.checkbox-row label {
+    margin: 0;
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-label);
+    cursor: pointer;
+}
+
+.download-card input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--red);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+button {
+    width: 100%;
+    padding: 14px 20px;
+    margin-top: 28px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px var(--red-glow);
+}
+
+button:hover {
+    background: #FF5050;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(255, 59, 59, 0.32);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px var(--red-glow);
+}
+
+/* Download button (green) */
+.btn-download {
+    display: inline-block;
+    width: 100%;
+    padding: 14px 20px;
+    margin-top: 0;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px var(--green-glow);
+}
+
+.btn-download:hover {
+    background: #2EDB6E;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(34, 197, 94, 0.28);
+}
+
+.btn-download:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   DOWNLOAD RESULT CARD DETAILS
+   ========================================= */
+.video-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.quality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: rgba(255, 59, 59, 0.12);
+    border: 1px solid rgba(255, 59, 59, 0.25);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.thumbnail-wrap {
+    margin: 0 0 24px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.thumbnail-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.download-actions {
+    margin-top: 24px;
+}
+
+/* Details/summary log */
+details.meta-log {
+    margin-top: 20px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+details.meta-log summary {
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    user-select: none;
+    letter-spacing: 0.3px;
+}
+
+details.meta-log summary:hover {
+    color: var(--text-label);
+}
+
+.meta-log-body {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.meta-log-body p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.meta-log-body strong {
+    color: var(--text-label);
+}
+
+/* =========================================
+   ALERTS & ERRORS
+   ========================================= */
+.errorlist {
+    color: #FF6B6B;
+    list-style: none;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.error-message {
+    color: #FF6B6B;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* =========================================
+   TABLES
+   ========================================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+table th {
+    padding: 12px 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-label);
+    transition: background 0.15s ease;
+}
+
+table td a {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+footer {
+    margin-top: auto;
+    padding: 28px 24px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+footer p strong {
+    color: var(--text-label);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    .hero { padding: 56px 20px 36px; }
+    .download-card { padding: 28px 22px; }
+    .navbar { padding: 0 5%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+}
