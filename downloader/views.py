@@ -6,7 +6,7 @@ from .models import DownloadHistory
 
 def sanitize_cookie_file():
     """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt,
-    completely stripping out broken extension-specific internal variables."""
+    fixing Python's internal cookiejar assertion errors and stripping extension junk."""
     try:
         with open('cookies.txt', 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -14,17 +14,28 @@ def sanitize_cookie_file():
         with open('clean_cookies.txt', 'w', encoding='utf-8') as f:
             f.write("# Netscape HTTP Cookie File\n\n")
             for line in lines:
-                # Skip comments or empty lines to avoid duplicates
                 if line.startswith('#') or not line.strip():
                     continue
                 
-                # CRITICAL: Drop any lines containing extension junk like 'goodTube_'
-                if 'goodTube_' in line:
-                    continue
-                    
-                # Ensure the line has exactly 7 valid Netscape columns
-                if len(line.split('\t')) == 7:
-                    f.write(line)
+                parts = line.strip('\n').split('\t')
+                
+                # Valid Netscape format always has exactly 7 columns
+                if len(parts) == 7:
+                    # 1. Strip out ANY cookie belonging to a third-party extension
+                    cookie_name = parts[5]
+                    if 'goodTube' in cookie_name or 'ext_name' in cookie_name or 'ext_id' in cookie_name:
+                        continue
+                        
+                    # 2. Fix the Python http.cookiejar AssertionError!
+                    # If the domain (Column 0) starts with a dot, Column 1 MUST be TRUE. 
+                    # If it doesn't, Column 1 MUST be FALSE.
+                    if parts[0].startswith('.'):
+                        parts[1] = 'TRUE'
+                    else:
+                        parts[1] = 'FALSE'
+                        
+                    # Write the perfectly clean, mathematically valid line
+                    f.write('\t'.join(parts) + '\n')
     except FileNotFoundError:
         pass
 # --------------------------------
