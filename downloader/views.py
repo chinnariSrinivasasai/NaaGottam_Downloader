@@ -27,7 +27,8 @@ def home(request):
                 "format": "best[ext=mp4]/best",
                 "quiet": True,
                 "noplaylist": True,
-                "cookiefile":"cookies.txt" 
+                "cookiefile":"cookies.txt",
+                "extractor_args": {"youtube": ["client=android,ios,tv"]},
             }
 
             try:

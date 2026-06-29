@@ -2,7 +2,6 @@
 # https://curl.haxx.se/rfc/cookie_spec.html
 # This is a generated file! Do not edit.
 
-.www.youtube.com	FALSE	/	FALSE	1812312501	goodTube_shorts	false
 .www.youtube.com	FALSE	/	FALSE	1812312501	goodTube_autoplay	true
 .www.youtube.com	FALSE	/	FALSE	1812312501	goodTube_uniqueUserStat	true
 .www.youtube.com	FALSE	/	FALSE	1817268634	ext_name	gdgnlfdenkmjcfgjpnookbglpndleahm

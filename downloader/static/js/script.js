@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Welcome to DjangoTube");
+    console.log("Script loaded successfully.");
 });
