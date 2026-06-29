@@ -24,10 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#2wu6dl3r_fsw9s-u^x&&w*w(@ey23r4t6!0s7domsbyv+n80w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '.ngrok-free.dev', 
+]
 
 # Application definition
 
@@ -127,3 +130,8 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 # Static root for WhiteNoise in production
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# CSRF Whitelist for Ngrok Tunnels
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.dev',
+]
