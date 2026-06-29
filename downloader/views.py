@@ -27,6 +27,7 @@ def home(request):
                 "format": "best[ext=mp4]/best",
                 "quiet": True,
                 "noplaylist": True,
+                "extractor_args": {"youtube": ["client=android,ios,tv"]},
             }
 
             try:
