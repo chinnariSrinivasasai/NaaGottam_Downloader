@@ -1,13 +1,35 @@
 import os
+import urllib.request
+import zipfile
 import yt_dlp
 from pathlib import Path
 from django.shortcuts import render
 from .forms import MediaForm
 from .models import DownloadHistory
 
+# --- BULLETPROOF DENO INSTALLER ---
 BASE_DIR = Path(__file__).resolve().parent.parent
-deno_path = os.path.join(BASE_DIR, '.deno', 'bin')
-os.environ["PATH"] += os.pathsep + deno_path
+deno_dir = os.path.join(BASE_DIR, '.deno', 'bin')
+deno_exe = os.path.join(deno_dir, 'deno')
+
+# If Deno isn't installed on the server, Python will download it right now
+if not os.path.exists(deno_exe):
+    print("Installing Deno JavaScript Engine to bypass PO Tokens...")
+    os.makedirs(deno_dir, exist_ok=True)
+    zip_path = os.path.join(deno_dir, 'deno.zip')
+    
+    # Fetch the official Linux binary (Render runs on Linux)
+    urllib.request.urlretrieve("https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip", zip_path)
+    
+    # Extract and grant execution permissions
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(deno_dir)
+    os.chmod(deno_exe, 0o755)
+    os.remove(zip_path)
+
+# Force the server system to recognize Deno so yt-dlp can use it
+os.environ["PATH"] += os.pathsep + deno_dir
+# ----------------------------------
 
 def sanitize_cookie_file():
     """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt,
@@ -73,6 +95,9 @@ def home(request):
                 "quiet": True,
                 "noplaylist": True,
                 "cookiefile": "clean_cookies.txt", 
+                "extractor_args": {
+                    "youtube": ["player_client=ios,web"]
+                },
             }
             
             try:
