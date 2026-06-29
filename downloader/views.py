@@ -4,9 +4,9 @@ from django.shortcuts import render
 from .forms import MediaForm
 from .models import DownloadHistory
 
-# --- ADD THIS HELPER FUNCTION ---
 def sanitize_cookie_file():
-    """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt"""
+    """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt,
+    completely stripping out broken extension-specific internal variables."""
     try:
         with open('cookies.txt', 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -14,11 +14,19 @@ def sanitize_cookie_file():
         with open('clean_cookies.txt', 'w', encoding='utf-8') as f:
             f.write("# Netscape HTTP Cookie File\n\n")
             for line in lines:
-                # Valid Netscape cookie lines always have exactly 7 tab-separated columns
-                if line.startswith('#') or len(line.split('\t')) == 7:
+                # Skip comments or empty lines to avoid duplicates
+                if line.startswith('#') or not line.strip():
+                    continue
+                
+                # CRITICAL: Drop any lines containing extension junk like 'goodTube_'
+                if 'goodTube_' in line:
+                    continue
+                    
+                # Ensure the line has exactly 7 valid Netscape columns
+                if len(line.split('\t')) == 7:
                     f.write(line)
     except FileNotFoundError:
-        pass 
+        pass
 # --------------------------------
 
 def home(request):
