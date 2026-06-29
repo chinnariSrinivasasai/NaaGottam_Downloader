@@ -1,8 +1,13 @@
 import os
 import yt_dlp
+from pathlib import Path
 from django.shortcuts import render
 from .forms import MediaForm
 from .models import DownloadHistory
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+deno_path = os.path.join(BASE_DIR, '.deno', 'bin')
+os.environ["PATH"] += os.pathsep + deno_path
 
 def sanitize_cookie_file():
     """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt,
@@ -62,23 +67,12 @@ def home(request):
             sanitize_cookie_file()
 
             # 2. yt-dlp Extraction logic
+            # 2. yt-dlp Extraction logic
             ydl_opts = {
-                # 1. Force the downloader to exclusively look for HLS (m3u8) streams
-                "format": "best[protocol^=m3u8]/best",
+                "format": "best[ext=mp4]/best",
                 "quiet": True,
                 "noplaylist": True,
                 "cookiefile": "clean_cookies.txt", 
-                
-                # 2. Force YouTube's backend to serve the Safari-specific formats
-                "extractor_args": {
-                    "youtube": ["player_client=web_safari"]
-                },
-                
-                # 3. Impersonate a Mac Safari browser to match the request
-                "http_headers": {
-                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-                    "Accept-Language": "en-US,en;q=0.9",
-                }
             }
             
             try:
