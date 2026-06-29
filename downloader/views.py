@@ -1,7 +1,25 @@
+import os
 import yt_dlp
 from django.shortcuts import render
 from .forms import MediaForm
 from .models import DownloadHistory
+
+# --- ADD THIS HELPER FUNCTION ---
+def sanitize_cookie_file():
+    """Reads the raw cookies.txt and generates a perfectly formatted clean_cookies.txt"""
+    try:
+        with open('cookies.txt', 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            
+        with open('clean_cookies.txt', 'w', encoding='utf-8') as f:
+            f.write("# Netscape HTTP Cookie File\n\n")
+            for line in lines:
+                # Valid Netscape cookie lines always have exactly 7 tab-separated columns
+                if line.startswith('#') or len(line.split('\t')) == 7:
+                    f.write(line)
+    except FileNotFoundError:
+        pass 
+# --------------------------------
 
 def home(request):
     submitted_data = None
@@ -14,7 +32,6 @@ def home(request):
         if form.is_valid():
             submitted_data = form.cleaned_data
 
-            # 1. Private DB save (Kept for your admin records)
             DownloadHistory.objects.create(
                 url=submitted_data["url"],
                 quality=submitted_data["quality"],
@@ -22,13 +39,16 @@ def home(request):
                 download_subtitle=submitted_data["download_subtitle"],
             )
 
+            # 1. RUN THE CLEANER BEFORE yt-dlp
+            sanitize_cookie_file()
+
             # 2. yt-dlp Extraction logic
             ydl_opts = {
                 "format": "best[ext=mp4]/best",
                 "quiet": True,
                 "noplaylist": True,
-                "cookiefile":"cookies.txt",
-                "extractor_args": {"youtube": ["client=android,ios,tv"]},
+                "cookiefile": "clean_cookies.txt", # Use the newly cleaned file!
+                "impersonate": "chrome",           # Tells the server to act exactly like Chrome
             }
 
             try:
@@ -46,7 +66,6 @@ def home(request):
     else:
         form = MediaForm()
 
-    # The history query and context variable have been completely removed
     return render(
         request,
         "downloader/index.html",
