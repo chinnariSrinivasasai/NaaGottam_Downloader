@@ -27,7 +27,7 @@ def home(request):
                 "format": "best[ext=mp4]/best",
                 "quiet": True,
                 "noplaylist": True,
-                "extractor_args": {"youtube": ["client=android,ios,tv"]},
+                "cookiefile":"cookies.txt" 
             }
 
             try:
@@ -39,8 +39,8 @@ def home(request):
                         "thumbnail": info.get("thumbnail") if submitted_data["download_thumbnail"] else None,
                         "download_url": info.get("url"),
                     }
-            except Exception:
-                error_message = "Could not extract video. Please ensure the YouTube link is public and valid."
+            except Exception as e:
+                error_message = f"Failed: {str(e)}"
 
     else:
         form = MediaForm()
